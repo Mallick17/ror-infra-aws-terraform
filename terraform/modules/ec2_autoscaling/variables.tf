@@ -46,3 +46,4 @@ variable "security_group_ids" {
   description = "Security group IDs to attach to EC2 instances"
   type        = list(string)
 }
+

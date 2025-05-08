@@ -13,7 +13,7 @@ resource "aws_launch_template" "ecs" {
   key_name      = var.key_name
 
   iam_instance_profile {
-    name = var.instance_profile_name
+    name = "ecsInstanceRole"
   }
 
   user_data = base64encode(<<-EOF

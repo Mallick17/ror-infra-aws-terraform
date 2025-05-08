@@ -30,3 +30,15 @@ resource "aws_codebuild_project" "this" {
   source_version = var.source_version
 }
 
+resource "null_resource" "trigger_codebuild_build" {
+  triggers = {
+    always_run = timestamp()
+  }
+
+  provisioner "local-exec" {
+    command = "aws codebuild start-build --project-name ${aws_codebuild_project.this.name} --region ap-south-1"
+  }
+
+  depends_on = [aws_codebuild_project.this]
+}
+

@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket = "your-terraform-state-bucket"
+    bucket = "terraformtf-statetf-buckettf"
     key    = "dev/terraform.tfstate"
     region = "ap-south-1"
   }
@@ -40,15 +40,28 @@ module "ecs_cluster" {
 module "ecs_service" {
   source = "../../modules/ecs_service"
 
-  cluster_name     = module.ecs_cluster.cluster_name
-  service_name     = var.ecs_service_name
-  task_family      = var.task_family
-  container_image  = module.ecr.repository_url
-  container_port   = var.container_port
-  redis_image      = var.redis_image
-  environment_vars = var.environment_vars
-  security_group_ids = var.security_group_ids
-  subnet_ids          = var.subnet_ids
+  cluster_id           = module.ecs_cluster.cluster_id
+  ecs_service_name     = var.ecs_service_name
+  task_family          = var.task_family
+  execution_role_arn   = "arn:aws:iam::339713104321:role/ecsTaskExecutionRole"
+  app_image            = module.ecr.repository_url
+  redis_image          = var.redis_image
+  container_port       = var.container_port
+
+  env_rails_env        = var.env_rails_env
+  env_db_user          = var.env_db_user
+  env_db_password      = var.env_db_password
+  env_db_host          = var.env_db_host
+  env_db_port          = var.env_db_port
+  env_db_name          = var.env_db_name
+  env_redis_url        = var.env_redis_url
+  env_rails_master_key = var.env_rails_master_key
+  env_secret_key_base  = var.env_secret_key_base
+
+  subnet_ids           = var.subnet_ids
+  security_group_ids   = var.security_group_ids
+  availability_zones   = var.availability_zones
+  region               = var.region
 }
 
 module "codebuild" {

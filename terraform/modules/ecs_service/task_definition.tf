@@ -14,8 +14,8 @@ resource "aws_ecs_task_definition" "this" {
       cpu       = 512
       memory    = 1024
       portMappings = [{
-        containerPort = 80
-        hostPort      = 80
+        containerPort = var.container_port
+        hostPort      = var.container_port
         protocol      = "tcp"
         appProtocol   = "http"
       }]

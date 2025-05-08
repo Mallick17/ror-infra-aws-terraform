@@ -108,3 +108,47 @@ variable "codebuild_service_role_arn" {
   type        = string
 }
 
+variable "env_rails_env" {
+  type = string
+}
+
+variable "env_db_user" {
+  type = string
+}
+
+variable "env_db_password" {
+  type = string
+}
+
+variable "env_db_host" {
+  type = string
+}
+
+variable "env_db_port" {
+  type = string
+}
+
+variable "env_db_name" {
+  type = string
+}
+
+variable "env_redis_url" {
+  type = string
+}
+
+variable "env_rails_master_key" {
+  type = string
+}
+
+variable "env_secret_key_base" {
+  type = string
+}
+
+variable "availability_zones" {
+  type = list(string)
+}
+
+variable "region" {
+  type = string
+}
+
