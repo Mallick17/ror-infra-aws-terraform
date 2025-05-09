@@ -38,22 +38,18 @@ This infrastructure provisions and deploys a Ruby on Rails application to an **E
 - ECS Cluster with Auto Scaling EC2 instances
 - ECS Service with App and Redis containers
 - AWS CodeBuild to build Docker images
-- Optional CodePipeline (planned or extendable)
 
 ---
 
 ## 📦 Module Breakdown
 
 ### 1. `ecr/`
-
 Creates an ECR repository to store the Docker image for the Rails app.
-
 - **Purpose**: Store Docker image to be used in ECS Task.
 - **Key Variable**: `repository_name`
 - **Output**: `repository_url`
 
 ### 2. `ec2_autoscaling/`
-
 Sets up:
 - ECS cluster
 - Launch Template using ECS-optimized Amazon Linux 2 AMI
@@ -67,39 +63,34 @@ Sets up:
   - `subnet_ids`, `security_group_ids`
 
 - **Key Resources**:
-
   - `aws_ecs_cluster`
   - `aws_launch_template`
   - `aws_autoscaling_group`
   - `aws_ecs_capacity_provider`
 
 ### 3. `ecs_service/`
-
 Defines ECS Task Definition and Service.
 
 - **Purpose**: Deploys Rails app and Redis as containers.
-- **Inputs**:
 
+- **Inputs**:
   - `cluster_id`, `execution_role_arn`, `app_image`, `redis_image`
   - Environment variables (Rails/DB/Redis)
   - Networking (subnets, security groups)
-- **Files**:
 
+- **Files**:
   - `main.tf`: ECS Service and Load Balancer if needed
   - `task_definition.tf`: Multi-container task definition (Rails + Redis)
 
 ### 4. `codebuild/`
-
 Defines CodeBuild project to build Docker image from GitHub source.
-
 - **Purpose**: Automates Docker image build and pushes to ECR.
 - **Inputs**:
-
   - `project_name`, `github_repo_url`, `buildspec_path`, `source_version`
   - `codebuild_service_role_arn`, `ecr_repository_url`
-* **Extras**:
 
-  * Includes a `null_resource` to trigger build using AWS CLI:
+- **Extras**:
+  - Includes a `null_resource` to trigger build using AWS CLI:
 
     ```hcl
     resource "null_resource" "trigger_codebuild_build" {
@@ -120,11 +111,9 @@ Defines CodeBuild project to build Docker image from GitHub source.
 ## 📂 Environment Configuration (`environment/dev`)
 
 ### `main.tf`
-
 Calls all the above modules, wiring them with the required variables.
 
 ### `terraform.tfvars`
-
 Stores variable values specific to the `dev` environment, e.g.:
 
 ```hcl
@@ -163,7 +152,6 @@ region                   = "ap-south-1"
 ```
 
 ### `variables.tf`
-
 Declares all variables used in `main.tf`
 
 ---
@@ -178,15 +166,14 @@ Declares all variables used in `main.tf`
 2. **Review plan**:
 
    ```sh
-   terraform plan -var-file="terraform.tfvars"
+   terraform plan
    ```
 3. **Apply changes**:
 
    ```sh
-   terraform apply -var-file="terraform.tfvars"
+   terraform apply
    ```
 4. **Image build via CodeBuild**:
-
    - Automatically triggered if `null_resource` is used.
    - Otherwise, trigger manually:
 
@@ -197,7 +184,6 @@ Declares all variables used in `main.tf`
 ---
 
 ## Future Enhancements
-
 - Add CodePipeline for full CI/CD.
 - Attach Load Balancer (ALB) for production traffic.
 - Add RDS and ElasticCache via Terraform for production-ready setup.
@@ -205,7 +191,6 @@ Declares all variables used in `main.tf`
 ---
 
 ## Notes
-
 - ECS EC2 launch type requires manual instance provisioning via ASG.
 - Make sure `ecsInstanceRole` is correctly attached as an **instance profile**, not just an IAM role.
 - CodeBuild must have permissions to push to ECR.
