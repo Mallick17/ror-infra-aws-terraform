@@ -108,7 +108,7 @@ Defines CodeBuild project to build Docker image from GitHub source.
 
 ---
 
-## 📂 Environment Configuration (`environment/dev`)
+## Environment Configuration (`environment/dev`)
 
 ### `main.tf`
 Calls all the above modules, wiring them with the required variables.
@@ -156,7 +156,7 @@ Declares all variables used in `main.tf`
 
 ---
 
-## 🚀 Deployment Steps
+## Deployment Steps
 
 1. **Initialize Terraform**:
 
