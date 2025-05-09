@@ -191,6 +191,8 @@ Declares all variables used in `main.tf`
 ---
 
 ## Notes
+- It will take some time to build images stop the tasks running in the cluster and make sure the image is built in CodeBuild and the start the tasks again.
+- There will be an error facing that the Logs hasnt been push to cloudwatch logs because there no log groups, Create a log groups in the CloudWatch and make sure it is in the name of the Task Definition provided in the cluster. Then wait for the task to be executed and check the container instance Public IP for the site to run.
 - ECS EC2 launch type requires manual instance provisioning via ASG.
 - Make sure `ecsInstanceRole` is correctly attached as an **instance profile**, not just an IAM role.
 - CodeBuild must have permissions to push to ECR.
